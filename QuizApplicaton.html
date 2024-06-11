@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Application</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(5px);
+            /* Add blur effect */
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+
+        .quiz-container {
+            width: 500px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .question {
+            margin-bottom: 20px;
+        }
+
+        .options {
+            margin-bottom: 10px;
+        }
+
+        .option {
+            margin-bottom: 5px;
+        }
+
+        #submit-btn {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #result-container {
+            display: none;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="quiz-container">
+        <h1>Quiz Application</h1>
+        <div class="question">
+            <p>1. What is the capital of France?</p>
+            <div class="options">
+                <div class="option">
+                    <input type="radio" name="q1" value="paris">
+                    <label for="paris">Paris</label>
+                </div>
+                <div class="option">
+                    <input type="radio" name="q1" value="berlin">
+                    <label for="berlin">Berlin</label>
+                </div>
+                <div class="option">
+                    <input type="radio" name="q1" value="london">
+                    <label for="london">London</label>
+                </div>
+            </div>
+        </div>
+        <div class="question">
+            <p>2. What is the capital of Japan?</p>
+            <div class="options">
+                <div class="option">
+                    <input type="radio" name="q2" value="tokyo">
+                    <label for="tokyo">Tokyo</label>
+                </div>
+                <div class="option">
+                    <input type="radio" name="q2" value="beijing">
+                    <label for="beijing">Beijing</label>
+                </div>
+                <div class="option">
+                    <input type="radio" name="q2" value="seoul">
+                    <label for="seoul">Seoul</label>
+                </div>
+            </div>
+        </div>
+        <div class="question">
+            <p>3. What is the capital of Brazil?</p>
+            <div class="options">
+                <div class="option">
+                    <input type="radio" name="q3" value="brasilia">
+                    <label for="brasilia">Brasília</label>
+                </div>
+                <div class="option">
+                    <input type="radio" name="q3" value="buenosaires">
+                    <label for="buenosaires">Buenos Aires</label>
+                </div>
+                <div class="option">
+                    <input type="radio" name="q3" value="lima">
+                    <label for="lima">Lima</label>
+                </div>
+            </div>
+        </div>
+        <button id="submit-btn">Submit Answers</button>
+        <div id="result-container">
+            <p>Congratulations! You answered all questions correctly 🎉</p>
+            <p>Your score: <span id="score"></span> out of 3</p>
+        </div>
+    </div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <p id="modal-message"></p>
+            <p>Your score: <span id="modal-score"></span> out of 3</p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('submit-btn').addEventListener('click', function () {
+            // Collect user answers
+            let answers = [];
+            let q1 = document.querySelector('input[name="q1"]:checked');
+            let q2 = document.querySelector('input[name="q2"]:checked');
+            let q3 = document.querySelector('input[name="q3"]:checked');
+
+            if (q1 !== null && q2 !== null && q3 !== null) {
+                answers.push(q1.value);
+                answers.push(q2.value);
+                answers.push(q3.value);
+
+                // Correct answers
+                let correctAnswers = ["paris", "tokyo", "brasilia"];
+
+                // Check user's answers
+                let score = 0;
+                for (let i = 0; i < correctAnswers.length; i++) {
+                    if (answers[i] === correctAnswers[i]) {
+                        score++;
+                    }
+                }
+
+                // Display result
+                let modal = document.getElementById('modal');
+                let modalMessage = document.getElementById('modal-message');
+                let modalScore = document.getElementById('modal-score');
+                if (score === 3) {
+                    modalMessage.textContent = "Congratulations! You answered all questions correctly 🎉";
+                    modal.style.display = 'block';
+                } else {
+                    modalMessage.textContent = "Sorry, you didn't answer all questions correctly.";
+                    modal.style.display = 'block';
+                }
+                modalScore.textContent = score;
+            } else {
+                alert("Please answer all questions.");
+            }
+        });
+
+        document.querySelector('.close-btn').addEventListener('click', function () {
+            document.getElementById('modal').style.display = 'none';
+        });
+    </script>
+
+</body>
+
+</html>
